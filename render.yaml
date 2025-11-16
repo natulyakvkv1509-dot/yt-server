@@ -2,7 +2,6 @@ services:
   - type: web
     name: yt-server
     env: node
-    plan: free
     buildCommand: "npm install"
-    startCommand: "node index.js"
-    autoDeploy: true
+    startCommand: "npm start"
+    plan: free
