@@ -25,18 +25,13 @@ app.post("/api/download", async (req, res) => {
       quality: quality || "highest"
     });
 
-    res.setHeader("Content-Disposition", attachment; filename="video.mp4");
-    ytdl(url, { format }).pipe(res);
+    res.header("Content-Disposition", attachment; filename="video.mp4");
 
+    ytdl(url, { format }).pipe(res);
   } catch (err) {
-    console.error("Download error:", err);
-    res.status(500).json({ error: "Server error during download" });
+    console.error(err);
+    res.status(500).json({ error: "Download error" });
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("YouTube download server is running");
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(Server running on port ${PORT}));
+app.listen(10000, () => console.log("YT server running on port 10000"));
