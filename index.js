@@ -25,7 +25,7 @@ app.post("/api/download", async (req, res) => {
       quality: quality || "highest",
     });
 
-   res.header("Content-Disposition", 'attachment; filename="video.mp4");
+   res.header("Content-Disposition", 'attachment; filename="video.mp4"');
 
     ytdl(url, { format }).pipe(res);
 
