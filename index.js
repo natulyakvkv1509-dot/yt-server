@@ -12,7 +12,7 @@ app.get("/download", async (req, res) => {
     const url = req.query.url;
 
     if (!url) {
-      return res.status(400).json({ error: "No URL provided" });
+      return res.status(400).json({ error: "Missing URL parameter" });
     }
 
     if (!ytdl.validateURL(url)) {
