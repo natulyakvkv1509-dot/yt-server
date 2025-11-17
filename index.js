@@ -12,7 +12,7 @@ app.get("/download", async (req, res) => {
     const url = req.query.url;
 
     if (!url) {
-      return res.status(400).json({ error: "Missing URL parameter" });
+      return res.status(400).json({ error: "No URL provided" });
     }
 
     if (!ytdl.validateURL(url)) {
@@ -44,11 +44,4 @@ app.get("/download", async (req, res) => {
 
 // Главная
 app.get("/", (req, res) => {
-  res.send("YouTube MP4 download server is running");
-});
-
-// Порт
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => {
-  console.log(`YT server running on port ${PORT}`);
-});
+  res.send("YouTube MP4
