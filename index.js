@@ -1,16 +1,15 @@
 import express from "express";
-import cors from "cors";
 import ytdl from "ytdl-core";
+import cors from "cors";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
-// Главная проверка
 app.get("/", (req, res) => {
   res.send("YouTube Downloader Server is running");
 });
 
-// Маршрут скачивания
 app.get("/download", async (req, res) => {
   try {
     const videoURL = req.query.url;
@@ -45,7 +44,6 @@ app.get("/download", async (req, res) => {
   }
 });
 
-// Порт
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
