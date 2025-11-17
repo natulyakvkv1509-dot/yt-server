@@ -11,16 +11,14 @@ app.get("/download", async (req, res) => {
   try {
     const url = req.query.url;
 
-    // Проверка URL
     if (!url) {
-      return res.status(400).json({ error: "No URL provided" });
+      return res.status(400).json({ error: "Missing URL parameter" });
     }
 
     if (!ytdl.validateURL(url)) {
       return res.status(400).json({ error: "Invalid YouTube URL" });
     }
 
-    // Получаем информацию о видео
     const info = await ytdl.getInfo(url);
 
     // Выбираем лучший MP4 формат
@@ -34,7 +32,7 @@ app.get("/download", async (req, res) => {
       return res.status(500).json({ error: "MP4 format not available" });
     }
 
-    // Заголовки для скачивания
+    // Заголовки
     res.setHeader("Content-Disposition", 'attachment; filename="video.mp4"');
     res.setHeader("Content-Type", "video/mp4");
 
@@ -47,12 +45,10 @@ app.get("/download", async (req, res) => {
   }
 });
 
-// Главная страница
 app.get("/", (req, res) => {
   res.send("YouTube MP4 download server is running");
 });
 
-// Запуск сервера
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`YT server running on port ${PORT}`);
