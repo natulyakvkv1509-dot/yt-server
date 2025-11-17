@@ -4,51 +4,54 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
+// === DOWNLOAD MP4 ===
 app.get("/download", async (req, res) => {
   try {
     const url = req.query.url;
 
     if (!url) {
-      return res.status(400).json({ error: "Missing URL parameter" });
+      return res.status(400).json({ error: "No URL provided" });
     }
 
-    // Получаем инфу
+    if (!ytdl.validateURL(url)) {
+      return res.status(400).json({ error: "Invalid YouTube URL" });
+    }
+
     const info = await ytdl.getInfo(url);
 
-    // Выбираем лучший MP4 формат
+    // Выбираем лучший mp4
     const format = ytdl.chooseFormat(info.formats, {
       filter: "audioandvideo",
-      quality: "highest",
-      // Гарантия, что формат будет mp4
-      container: "mp4"
+      container: "mp4",
+      quality: "highest"
     });
 
     if (!format || !format.url) {
       return res.status(500).json({ error: "MP4 format not available" });
     }
 
-    // Отдаём файл как MP4
+    // Заголовки
     res.setHeader("Content-Disposition", 'attachment; filename="video.mp4"');
-
     res.setHeader("Content-Type", "video/mp4");
 
-    ytdl(url, {
-      format: format,
-      filter: "audioandvideo"
-    }).pipe(res);
+    // Стрим
+    ytdl(url, { format }).pipe(res);
 
   } catch (err) {
     console.error("Download error:", err);
-    res.status(500).json({ error: "Server error during download" });
+    return res.status(500).json({ error: "Download error" });
   }
 });
 
+// Главная
 app.get("/", (req, res) => {
   res.send("YouTube MP4 download server is running");
 });
 
+// Порт
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () =>
-  console.log(YT server running on port ${PORT})
-);
+app.listen(PORT, () => {
+  console.log(`YT server running on port ${PORT}`);
+});
