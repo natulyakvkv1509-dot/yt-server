@@ -29,10 +29,8 @@ app.get("/download", async (req, res) => {
     }
 
     // Отдаём файл как MP4
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="video.mp4"'
-    );
+    res.setHeader("Content-Disposition", 'attachment; filename="video.mp4"');
+
     res.setHeader("Content-Type", "video/mp4");
 
     ytdl(url, {
